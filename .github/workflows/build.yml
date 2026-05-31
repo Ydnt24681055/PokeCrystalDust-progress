@@ -17,16 +17,23 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Cleanup Broken Submodules
+        run: |
+          rm -rf tools/agbcc tools/gbagfx tools/preproc tools/scaninc tools/ramscrgen
+          git submodule sync --recursive
+          git submodule update --init --recursive
+
       - name: Install Dependencies
         run: |
           sudo dpkg --add-architecture i386
           sudo apt-get update
           sudo apt-get install -y build-essential gcc-arm-none-eabi binutils-arm-none-eabi
 
-      - name: Build
-        run: |
-          make tools
-          make -j$(nproc)
+      - name: Build Tools
+        run: make tools
+
+      - name: Build ROM
+        run: make -j$(nproc)
 
       - name: Upload ROM
         uses: actions/upload-artifact@v4
