@@ -17,12 +17,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Cleanup Broken Submodules
-        run: |
-          rm -rf tools/agbcc tools/gbagfx tools/preproc tools/scaninc tools/ramscrgen
-          git submodule sync --recursive
-          git submodule update --init --recursive
-
       - name: Install Dependencies
         run: |
           sudo dpkg --add-architecture i386
